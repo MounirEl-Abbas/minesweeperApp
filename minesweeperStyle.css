@@ -15,8 +15,8 @@ body {
   );
 }
 .grid {
-  height: 400px;
-  width: 400px;
+  height: 800px;
+  width: 800px;
   display: flex;
   flex-wrap: wrap;
   background-color: rgb(173, 181, 184);

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.grid')
-  let width = 10
-  let bombAmount = 20
+  let width = 20
+  let bombAmount = 50
   let flags = 0
   let squares = []
   let isGameOver = false
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const emptyArray = Array(width*width - bombAmount).fill('valid')
     const gameArray = emptyArray.concat(bombsArray)
     const shuffledArray = gameArray.sort(() => Math.random() -0.5)
-    
+    console.log(shuffledArray)
 
 
 
@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
       square.classList.add(shuffledArray[i])        //Give it an id of ShuffledArray[i] (80 class="valid" -- 20 class ="bomb")
       grid.appendChild(square)                      //Add the square to our grid div
       squares.push(square)                          //Push it into squares array [div#ID.class * 100]
+      // square.textContent = i
 
       //normal click
       square.addEventListener('click', function(e) {
@@ -47,13 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
     //Iterate every square, check each surrounding square, if contains bomb class, increase it's total value
       if (squares[i].classList.contains('valid')) {
         if (i > 0 && !isLeftEdge && squares[i - 1].classList.contains('bomb')) total ++          //Check left of square
-        if (i > 9 && !isRightEdge && squares[i + 1 - width].classList.contains('bomb')) total ++ //Check top-right of square
-        if (i > 9 && squares[i - width].classList.contains('bomb')) total ++                     //Check above square
-        if (i > 10 && !isLeftEdge && squares[i - 1 - width].classList.contains('bomb')) total++  //Check top-left of square
-        if (i < 99 && !isRightEdge && squares[i + 1].classList.contains('bomb')) total ++        //Check right of square
-        if (i < 90 && !isLeftEdge && squares[i - 1 + width].classList.contains('bomb')) total++  //Check bottom-left of square
-        if (i < 89 && !isRightEdge && squares[i + 1 + width].classList.contains('bomb')) total++ //Check bottom-right of square
-        if (i < 90 && squares[i + width].classList.contains('bomb')) total++                     //Check below of square
+        if (i > width - 1 && !isRightEdge && squares[i + 1 - width].classList.contains('bomb')) total ++ //Check top-right of square
+        if (i > width - 1 && squares[i - width].classList.contains('bomb')) total ++                     //Check above square
+        if (i > width && !isLeftEdge && squares[i - 1 - width].classList.contains('bomb')) total++  //Check top-left of square
+        if (i < (width * width) - 1 && !isRightEdge && squares[i + 1].classList.contains('bomb')) total ++        //Check right of square
+        if (i < (width*width) - width && !isLeftEdge && squares[i - 1 + width].classList.contains('bomb')) total++  //Check bottom-left of square
+        if (i < (width*width) - width - 1 && !isRightEdge && squares[i + 1 + width].classList.contains('bomb')) total++ //Check bottom-right of square
+        if (i < (width*width) - width && squares[i + width].classList.contains('bomb')) total++                     //Check below of square
 
 
 
@@ -127,37 +128,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const newSquare = document.getElementById(newId)    //Pass it into click()
         click(newSquare)                                    //And Rerun ALL checkSquare() Function on that Square
       }
-      if (currentId > 9 && !isRightEdge) {
+      if (currentId > width - 1 && !isRightEdge) {
         const newId = squares[parseInt(currentId) +1 -width].id //Check Top-right of square
         const newSquare = document.getElementById(newId)
         click(newSquare)
       }
-      if (currentId > 10) {
+      if (currentId > width) {
         const newId = squares[parseInt(currentId - width)].id   //Check Above of square
         const newSquare = document.getElementById(newId)
         click(newSquare)
       }
-      if (currentId > 10 && !isLeftEdge) {
+      if (currentId > width && !isLeftEdge) {
         const newId = squares[parseInt(currentId) - 1 - width].id  //Check top-left of square
         const newSquare = document.getElementById(newId)
         click(newSquare)
       }
-      if (currentId < 99 && !isRightEdge) {
+      if (currentId < (width*width) -1 && !isRightEdge) {
         const newId = squares[parseInt(currentId) +1].id    //Check right of square
         const newSquare = document.getElementById(newId)
         click(newSquare)
       }
-      if (currentId < 90 && !isLeftEdge) {
+      if (currentId < (width*width) - width && !isLeftEdge) {
         const newId = squares[parseInt(currentId) - 1 + width].id //Check bottom-left of square
         const newSquare = document.getElementById(newId)
         click(newSquare)
       }
-      if (currentId < 89 && !isRightEdge) {
+      if (currentId < (width*width) - width - 1 && !isRightEdge) {
         const newId = squares[parseInt(currentId) + 1 + width].id //check bottom-right
         const newSquare = document.getElementById(newId)
         click(newSquare)
       }
-      if (currentId < 90) {
+      if (currentId < (width*width) - width) {
         const newId = squares[parseInt(currentId) + width].id   //check below
         const newSquare = document.getElementById(newId)
         click(newSquare)
