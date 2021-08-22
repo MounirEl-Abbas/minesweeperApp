@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const emptyArray = Array(width*width - bombAmount).fill('valid')
     const gameArray = emptyArray.concat(bombsArray)
     const shuffledArray = gameArray.sort(() => Math.random() -0.5)
-    console.log(shuffledArray)
+    
 
 
 
@@ -71,10 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // add flag with right click
   function addFlag(square) {
     if (isGameOver) return
-    if (!square.classList.contains('checked') && (flags < bombAmount)) {
+    if (!square.classList.contains('checked')) {    
       if (!square.classList.contains('flag')) {
         square.classList.add('flag')
-        square.innerHTML = 'f'
+        square.innerHTML = '🚩'
         flags++
         checkForWin()
       }else {
@@ -82,12 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
         square.innerHTML = ''
         flags--
       }
+      checkForWin()
     }
   }
 
   //Click on square actions
   function click(square) {
-    console.log(square)
     let currentId = square.id
     if (isGameOver) return
     if (square.classList.contains('checked') || square.classList.contains('flag')) return   //If Square clicked is already checked, or flagged > return
@@ -98,6 +98,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if(total !=0) {                                       //If not 0 bombs around
         square.classList.add('checked')                     //Check it and continue as normal
         square.innerHTML = total
+        if (total == 1) square.style.color = 'blue'
+        if (total == 2) square.style.color = 'green'
+        if (total == 3) square.style.color = 'maroon'
+        if (total == 4) square.style.color = 'goldenrod'
+        if (total == 5) square.style.color = 'red'
+        if (total == 6) square.style.color = 'blueviolet'
+        if (total == 7) square.style.color = 'purple'
+        if (total == 8) square.style.color = 'cyan'
+        if (total == 9) square.style.color = 'gold'
         return
       }
       checkSquare(square, currentId)                        //If square clicked has no bombs around it, Do the minesweeper clear an area thing (recursion)
@@ -165,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //show all the boms
     squares.forEach(square => {
       if (square.classList.contains('bomb')) {
-        square.innerHTML = 'icon'
+        square.innerHTML = '💣'
       }
     })
   }
@@ -177,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if(squares[i].classList.contains('flag') && squares[i].classList.contains('bomb')) {
         matches ++
     }
-    if (matches === bombAmount) {
+    if (matches === bombAmount && flags === bombAmount) {
       console.log('win')
       isGameOver = true
     }
