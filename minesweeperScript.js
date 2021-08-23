@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'hard':
         console.log('picked hard')
         width = 30
-        bombAmount = 250
+        bombAmount = 300
         grid.style.width = '900px'
         grid.style.height = '900px'
         
