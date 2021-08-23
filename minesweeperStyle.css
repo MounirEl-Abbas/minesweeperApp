@@ -13,6 +13,21 @@ body {
     rgba(142, 142, 142, 0.59) 67%,
     rgba(142, 142, 142, 0.57) 69%
   );
+  background-repeat: no-repeat;
+}
+button {
+  position: absolute;
+  background-color: green;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 2px;
+  top: 25px;
+  right: 25px;
+}
+button > a {
+  text-decoration: none;
+  font-family: monospace;
+  color: white;
 }
 .grid {
   height: 800px;
@@ -32,10 +47,6 @@ body {
   font-family: monospace;
   font-size: 24px;
   font-weight: 900;
-}
-
-.bomb {
-  background-color: orange;
 }
 
 div .checked {

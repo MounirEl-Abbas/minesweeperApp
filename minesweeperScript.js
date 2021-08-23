@@ -1,10 +1,54 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+  /*************Default Difficulty****************/
   const grid = document.querySelector('.grid')
-  let width = 20
-  let bombAmount = 50
+  let width 
+  let bombAmount
   let flags = 0
   let squares = []
   let isGameOver = false
+  /*********************************************/
+
+  /*************User Prompt Difficulty****************/
+  let difficultyChosen = prompt('\n Choose Difficulty (Case-insensitive)\n Easy = 10x10 \n Medium = 20x20 *Default \n Hard = 30x30')
+  gameDifficulty()
+
+  function gameDifficulty(){
+    switch (difficultyChosen.toLowerCase()) {
+      case 'easy':
+        console.log('picked easy')
+        width = 10
+        bombAmount = 25
+        grid.style.width = '400px'
+        grid.style.height = '400px'
+        
+        break;
+      case 'medium':
+        console.log('picked medium')
+        width = 20
+        bombAmount = 100
+        grid.style.width = '800px'
+        grid.style.height = '800px'
+        
+        break;
+      case 'hard':
+        console.log('picked hard')
+        width = 30
+        bombAmount = 250
+        grid.style.width = '900px'
+        grid.style.height = '900px'
+        
+        break;
+    
+      default:
+        width = 20
+        bombAmount = 100
+        break;
+    }
+    
+  }
+  /**************************************************/
+
 
   //create Board
   function createBoard() {
@@ -26,6 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(square)                      //Add the square to our grid div
       squares.push(square)                          //Push it into squares array [div#ID.class * 100]
       // square.textContent = i
+      if(width === 30){                 //If Hard difficulty is chosen
+        square.style.width = '24px'     //Make cells smaller
+        square.style.height = '24px'
+        square.style.fontSize = '20px'  //Decrease font-size
+      }
 
       //normal click
       square.addEventListener('click', function(e) {
@@ -47,19 +96,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Iterate every square, check each surrounding square, if contains bomb class, increase it's total value
       if (squares[i].classList.contains('valid')) {
-        if (i > 0 && !isLeftEdge && squares[i - 1].classList.contains('bomb')) total ++          //Check left of square
-        if (i > width - 1 && !isRightEdge && squares[i + 1 - width].classList.contains('bomb')) total ++ //Check top-right of square
-        if (i > width - 1 && squares[i - width].classList.contains('bomb')) total ++                     //Check above square
-        if (i > width && !isLeftEdge && squares[i - 1 - width].classList.contains('bomb')) total++  //Check top-left of square
-        if (i < (width * width) - 1 && !isRightEdge && squares[i + 1].classList.contains('bomb')) total ++        //Check right of square
-        if (i < (width*width) - width && !isLeftEdge && squares[i - 1 + width].classList.contains('bomb')) total++  //Check bottom-left of square
+        if (i > 0 && !isLeftEdge && squares[i - 1].classList.contains('bomb')) total ++                               //Check left of square
+        if (i > width - 1 && !isRightEdge && squares[i + 1 - width].classList.contains('bomb')) total ++              //Check top-right of square
+        if (i > width - 1 && squares[i - width].classList.contains('bomb')) total ++                                  //Check above square
+        if (i > width && !isLeftEdge && squares[i - 1 - width].classList.contains('bomb')) total++                    //Check top-left of square
+        if (i < (width * width) - 1 && !isRightEdge && squares[i + 1].classList.contains('bomb')) total ++            //Check right of square
+        if (i < (width*width) - width && !isLeftEdge && squares[i - 1 + width].classList.contains('bomb')) total++    //Check bottom-left of square
         if (i < (width*width) - width - 1 && !isRightEdge && squares[i + 1 + width].classList.contains('bomb')) total++ //Check bottom-right of square
-        if (i < (width*width) - width && squares[i + width].classList.contains('bomb')) total++                     //Check below of square
-
-
+        if (i < (width*width) - width && squares[i + width].classList.contains('bomb')) total++                       //Check below of square
 
         squares[i].setAttribute('data', total)
-        console.log(squares[i])
+        
       }
     }
 
@@ -166,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }, 10);
   }
-
   //game over
   function gameOver(square) {
     console.log('boom')
@@ -174,11 +220,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //show all the boms
     squares.forEach(square => {
+      let total = square.getAttribute('data')               //Get data, display it in the square (num of bombs adjacent)
+                                      //If not 0 bombs around
+        square.classList.add('checked')                     //Check it and continue as normal
+        square.innerHTML = total
+        if (total == 0) square.style.color = 'transparent'
+        if (total == 1) square.style.color = 'blue'
+        if (total == 2) square.style.color = 'green'
+        if (total == 3) square.style.color = 'maroon'
+        if (total == 4) square.style.color = 'goldenrod'
+        if (total == 5) square.style.color = 'red'
+        if (total == 6) square.style.color = 'blueviolet'
+        if (total == 7) square.style.color = 'purple'
+        if (total == 8) square.style.color = 'cyan'
+        if (total == 9) square.style.color = 'gold'
+      
       if (square.classList.contains('bomb')) {
         square.innerHTML = '💣'
       }
-    })
-  }
+  })
+}
 
   //check for win
   function checkForWin() {
@@ -188,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         matches ++
     }
     if (matches === bombAmount && flags === bombAmount) {
-      console.log('win')
+      alert('You Win!')
       isGameOver = true
     }
     }
